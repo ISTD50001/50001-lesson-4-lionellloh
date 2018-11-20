@@ -6,11 +6,13 @@ import android.provider.BaseColumns;
  * Created by norman_lee on 6/10/17.
  */
 
-public class CharaContract {
+private class CharaContract {
 
-    //TODO 7.1 Examine the static inner classes. No coding is needed
+    //TODO 7.1 Examine the static inner classes. No coding is needed - Done
 
-    //TODO 7.2 Prevent Instantiation of this Contract class
+    //TODO 7.2 Prevent Instantiation of this Contract class - Done
+
+
 
     public static final class CharaEntry implements BaseColumns {
 

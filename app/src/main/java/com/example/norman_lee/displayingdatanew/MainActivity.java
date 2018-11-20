@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         //TODO 7.12 get an instance of charaDbHelper
-
+        charaDbHelper = CharaDbHelper.createCharaDbHelper(context.getApplicationContext());
 
         //TODO 7.13 test the methods you wrote
 

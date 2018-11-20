@@ -25,6 +25,13 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Random;
 
+import static com.example.norman_lee.displayingdatanew.CharaContract.CharaEntry.COL_DESCRIPTION;
+import static com.example.norman_lee.displayingdatanew.CharaContract.CharaEntry.COL_FILE;
+import static com.example.norman_lee.displayingdatanew.CharaContract.CharaEntry.COL_NAME;
+import static com.example.norman_lee.displayingdatanew.CharaContract.CharaSql.SQL_CREATE_TABLE;
+import static com.example.norman_lee.displayingdatanew.CharaContract.CharaSql.SQL_DROP_TABLE;
+import static com.example.norman_lee.displayingdatanew.CharaContract.CharaSql.SQL_QUERY_ONE_RANDOM_ROW;
+
 /**
  * Created by norman_lee on 6/10/17.
  */
@@ -40,21 +47,37 @@ public class CharaDbHelper extends SQLiteOpenHelper {
     private SQLiteDatabase writeableDb;
     private static CharaDbHelper charaDbHelper;
 
-    //TODO 7.4 Create the Constructor and make it a singleton
-    CharaDbHelper(Context context){
+    public static final String TAG = "Logcat";
+
+    //TODO 7.4 Create the Constructor and make it a singleton - done
+    private CharaDbHelper(Context context){
         super(context, CharaContract.CharaEntry.TABLE_NAME, null, DATABASE_VERSION );
         this.context = context;
+
+    }
+
+    static CharaDbHelper createCharaDbHelper(Context context) {
+        //context object of a particular activity is passed to it
+        // so we get the context object of the entire app below
+        if(charaDbHelper == null){
+            charaDbHelper = new CharaDbHelper(context.getApplicationContext());
+        }
+        return charaDbHelper;
     }
 
     //TODO 7.5 Complete onCreate. You may make use of fillTable below
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-
+        sqLiteDatabase.execSQL(SQL_CREATE_TABLE);
+        fillTable(sqLiteDatabase);
     }
 
     //TODO 7.6 Complete onUpgrade
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+        sqLiteDatabase.execSQL(SQL_DROP_TABLE);
+        onCreate(sqLiteDatabase
+        Log.i(TAG, "onUpgrade is activated");
 
     }
 
@@ -88,7 +111,7 @@ public class CharaDbHelper extends SQLiteOpenHelper {
             Log.i("Norman","" + arrayList.get(i).getDescription());
             ContentValues cv = new ContentValues();
 
-            cv.put(CharaContract.CharaEntry.COL_NAME, arrayList.get(i).getName());
+            cv.put(COL_NAME, arrayList.get(i).getName());
             cv.put(CharaContract.CharaEntry.COL_DESCRIPTION, arrayList.get(i).getDescription());
 
             String fname = arrayList.get(i).getFile();
@@ -113,7 +136,18 @@ public class CharaDbHelper extends SQLiteOpenHelper {
     //TODO 7.8 query one row at random
     public CharaData queryOneRowRandom(){
 
-        return new CharaData("","","");
+        if (readableDb == null){
+            readableDb = getReadableDatabase();
+        }
+
+        String SQLCommand = SQL_QUERY_ONE_RANDOM_ROW ;
+        Cursor cursor = readableDb.rawQuery(SQL_QUERY_ONE_RANDOM_ROW, null);
+
+
+
+        return getDataFromCursor(0,  );
+
+
 
     }
 
@@ -131,6 +165,20 @@ public class CharaDbHelper extends SQLiteOpenHelper {
         String description =null;
         Bitmap bitmap =null;
 
+        cursor.moveToPosition(position);
+        //extract the name column
+
+        int nameIndex = cursor.getColumnIndex(COL_NAME);
+        name = cursor.getString(nameIndex);
+
+        int descriptionIndex = cursor.getColumnIndex(COL_DESCRIPTION);
+        description = cursor.getString(descriptionIndex);
+
+        int bitmapIndex = cursor.getColumnIndex(COL_FILE);
+        byte [] bitmapData = cursor.getBlob(bitmapIndex);
+        bitmap = BitmapFactory.decodeByteArray(bitmapData, 0, bitmapData.length);
+
+
         return new CharaData(name, description, bitmap);
     }
 
@@ -147,7 +195,12 @@ public class CharaDbHelper extends SQLiteOpenHelper {
 
     //TODO 7.7 return the number of rows in the database
     public long queryNumRows(){
-        return 0;
+        if (readableDb == null){
+
+            readableDb = getReadableDatabase();
+        }
+        return DatabaseUtils.queryNumEntries(readableDb,
+                CharaContract.CharaEntry.TABLE_NAME);
     }
 
     public Context getContext(){
