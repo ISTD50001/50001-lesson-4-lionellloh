@@ -154,7 +154,14 @@ public class CharaDbHelper extends SQLiteOpenHelper {
     //TODO 7.9 queryOneRow gets the entire database and returns the row in position as a CharaData object
     public CharaData queryOneRow(int position){
 
-        return new CharaData("","","");
+        if (readableDb == null){
+
+            readableDb = getReadableDatabase();
+        }
+
+        Cursor cursor = readableDb.rawQuery(CharaContract.CharaSql.SQL_QUERY_ALL_ROWS, null);
+
+        return getDataFromCursor(position, cursor);
 
     }
 
