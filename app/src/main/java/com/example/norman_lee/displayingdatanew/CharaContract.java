@@ -6,7 +6,7 @@ import android.provider.BaseColumns;
  * Created by norman_lee on 6/10/17.
  */
 
-private class CharaContract {
+public class CharaContract {
 
     //TODO 7.1 Examine the static inner classes. No coding is needed - Done
 

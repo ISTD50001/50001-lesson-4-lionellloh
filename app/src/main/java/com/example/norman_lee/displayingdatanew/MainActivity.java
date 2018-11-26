@@ -38,21 +38,39 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         //TODO 7.12 get an instance of charaDbHelper
-        charaDbHelper = CharaDbHelper.createCharaDbHelper(context.getApplicationContext());
+        charaDbHelper = CharaDbHelper.createCharaDbHelper(this);
 
         //TODO 7.13 test the methods you wrote
 
-        TestCharaDbHelper.testQueryOneRowRandom(charaDbHelper);
-        TestCharaDbHelper.testTable(charaDbHelper);
-        TestCharaDbHelper.testInsertOneRow(charaDb,
-                "Alan Turing",
-                "WW2 Computer aSicnetist",
-                R.drawable.alanturing);
+//        TestCharaDbHelper.testQueryOneRowRandom(charaDbHelper);
+//        TestCharaDbHelper.testTable(charaDbHelper);
+//        TestCharaDbHelper.testInsertOneRow(charaDbHelper,
+//                "Alan Turing",
+//                "WW2 Computer aSicnetist",
+//                R.drawable.alanturing);
+
+        TestCharaDbHelper.testDeleteOneRow(charaDbHelper, "Alan Turing");
 
         //TODO 8.1 Get References to the widgets
 
+        textViewName = findViewById(R.id.textViewName);
+        imageViewFile = findViewById(R.id.imageViewFile);
+        buttonGetImage = findViewById(R.id.buttonGetImage);
+
+
 
         //TODO 8.2 when the getImage button is clicked, get a random image from the SQLite Database
+
+        buttonGetImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+
+                CharaDbHelper.CharaData charaData = charaDbHelper.queryOneRowRandom();
+
+                textViewName.setText(charaData.getName());
+                imageViewFile.setImageBitmap(charaData.getBitmap());
+            }
+        });
 
 
         //TODO 8.3 When the fab is clicked, launch DataEntryActivity and invoke startActivityForResult

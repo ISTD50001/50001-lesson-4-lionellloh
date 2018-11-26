@@ -21,6 +21,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.io.ByteArrayOutputStream;
+import java.io.CharArrayReader;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Random;
@@ -77,7 +78,7 @@ public class CharaDbHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         sqLiteDatabase.execSQL(SQL_DROP_TABLE);
-        onCreate(sqLiteDatabase
+        onCreate(sqLiteDatabase);
         Log.i(TAG, "onUpgrade is activated");
 
     }
@@ -146,7 +147,7 @@ public class CharaDbHelper extends SQLiteOpenHelper {
 
 
 
-        return getDataFromCursor(0,  );
+        return getDataFromCursor(0, cursor);
 
 
 
@@ -216,7 +217,17 @@ public class CharaDbHelper extends SQLiteOpenHelper {
 
     //TODO 7.11 Delete one row given the name field
     public int deleteOneRow(String name){
-        return 0;
+        if (writeableDb == null){
+            writeableDb = getWritableDatabase();
+
+        }
+        String WHERE_CLAUSE = CharaContract.CharaEntry.COL_NAME + " = ?";
+
+        String[] WHERE_ARGS = {name};
+
+        int rowsDeleted = writeableDb.delete(CharaContract.CharaEntry.TABLE_NAME,
+                                            WHERE_CLAUSE, WHERE_ARGS);
+        return rowsDeleted;
     }
 
     //TODO 7.7 return the number of rows in the database
