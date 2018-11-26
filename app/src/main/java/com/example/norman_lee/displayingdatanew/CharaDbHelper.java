@@ -28,6 +28,7 @@ import java.util.Random;
 import static com.example.norman_lee.displayingdatanew.CharaContract.CharaEntry.COL_DESCRIPTION;
 import static com.example.norman_lee.displayingdatanew.CharaContract.CharaEntry.COL_FILE;
 import static com.example.norman_lee.displayingdatanew.CharaContract.CharaEntry.COL_NAME;
+import static com.example.norman_lee.displayingdatanew.CharaContract.CharaEntry.TABLE_NAME;
 import static com.example.norman_lee.displayingdatanew.CharaContract.CharaSql.SQL_CREATE_TABLE;
 import static com.example.norman_lee.displayingdatanew.CharaContract.CharaSql.SQL_DROP_TABLE;
 import static com.example.norman_lee.displayingdatanew.CharaContract.CharaSql.SQL_QUERY_ONE_RANDOM_ROW;
@@ -191,6 +192,24 @@ public class CharaDbHelper extends SQLiteOpenHelper {
 
     //TODO 7.10 Insert one row when data is passed to it
     public void insertOneRow(CharaData charaData){
+
+        if(writeableDb == null){
+
+            writeableDb = getWritableDatabase();
+        }
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(CharaContract.CharaEntry.COL_NAME,charaData.getName());
+        contentValues.put(CharaContract.CharaEntry.COL_DESCRIPTION, charaData.getDescription());
+
+        // To handle bitmap, you will need to convert the bitmap data to a byte[]
+
+        byte[] bitMapData = Utils.convertBitmapToByteArray(charaData.getBitmap());
+        contentValues.put(CharaContract.CharaEntry.COL_FILE, bitMapData);
+        long row = writeableDb.insert(TABLE_NAME, null, contentValues);
+        Log.i(TAG, "row inserted:" + row);
+
+
 
     }
 

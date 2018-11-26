@@ -44,6 +44,10 @@ public class MainActivity extends AppCompatActivity {
 
         TestCharaDbHelper.testQueryOneRowRandom(charaDbHelper);
         TestCharaDbHelper.testTable(charaDbHelper);
+        TestCharaDbHelper.testInsertOneRow(charaDb,
+                "Alan Turing",
+                "WW2 Computer aSicnetist",
+                R.drawable.alanturing);
 
         //TODO 8.1 Get References to the widgets
 
