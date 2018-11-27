@@ -23,7 +23,7 @@ public class CharaAdapter extends RecyclerView.Adapter<CharaAdapter.CharaViewHol
         mInflater = LayoutInflater.from(context);
 
         this.context = context;
-        this.charaDbHelper = charaDbHelper; 
+        this.charaDbHelper = charaDbHelper;
     }
 
     //TODO 9.4 onCreateViewHolder inflates each CardView layout (no coding)
@@ -37,13 +37,15 @@ public class CharaAdapter extends RecyclerView.Adapter<CharaAdapter.CharaViewHol
     //TODO 9.5 onBindViewHolder binds the data to each card according to its position
     @Override
     public void onBindViewHolder(@NonNull CharaViewHolder charaViewHolder, int i) {
+        CharaDbHelper.CharaData charaData = charaDbHelper.queryOneRow(i);
 
-    }
+        charaViewHolder.textViewName.setText(charaData.getName());
+
 
     //TODO 9.6 this method controls the number of cardviews in the recyclerview
     @Override
     public int getItemCount() {
-        return 0;
+        return (int) charaDbHelper.queryNumRows();
     }
 
     //TODO 9.2 Complete the constructor to initialize the widgets
