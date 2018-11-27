@@ -21,6 +21,9 @@ public class CharaAdapter extends RecyclerView.Adapter<CharaAdapter.CharaViewHol
     //TODO 9.3 assign the inputs to instance variables
     public CharaAdapter(Context context, CharaDbHelper charaDbHelper) {
         mInflater = LayoutInflater.from(context);
+
+        this.context = context;
+        this.charaDbHelper = charaDbHelper; 
     }
 
     //TODO 9.4 onCreateViewHolder inflates each CardView layout (no coding)
@@ -46,6 +49,7 @@ public class CharaAdapter extends RecyclerView.Adapter<CharaAdapter.CharaViewHol
     //TODO 9.2 Complete the constructor to initialize the widgets
     class CharaViewHolder extends RecyclerView.ViewHolder{
 
+
         public TextView textViewName;
         public TextView textViewDescription;
         public TextView textViewPosition;
@@ -53,6 +57,11 @@ public class CharaAdapter extends RecyclerView.Adapter<CharaAdapter.CharaViewHol
 
         public CharaViewHolder(View view){
             super(view);
+
+            textViewName = view.findViewById(R.id.cardViewTextName);
+            textViewDescription = view.findViewById(R.id.cardViewTextDescription);
+            textViewPosition = view.findViewById(R.id.cardViewTextCount);
+            imageViewChara = view.findViewById(R.id.cardViewImage);
 
         }
 

@@ -77,7 +77,7 @@ public class DataEntryActivity extends AppCompatActivity {
             }catch(FileNotFoundException ex){
 
                 ex.printStackTrace();
-//                Display a toast instead? 
+//                Display a toast instead?
             }
 
         }

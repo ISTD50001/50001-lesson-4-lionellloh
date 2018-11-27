@@ -109,6 +109,12 @@ public class MainActivity extends AppCompatActivity {
 
         //TODO 9.1 Complete this to bring users to the RecyclerView activity
 
+        if (id == R.id.go_recycler_view){
+            Intent intent = new Intent(this, RecylerViewActivity.class);
+
+            startActivity(intent);
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
