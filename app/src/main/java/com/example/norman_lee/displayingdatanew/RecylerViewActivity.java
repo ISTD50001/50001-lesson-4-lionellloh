@@ -19,6 +19,12 @@ public class RecylerViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_recyler_view);
 
         //TODO 9.7 The standard code to fill the recyclerview with data
+        recyclerView = findViewById(R.id.charaRecyclerView);
+        charaDbHelper = CharaDbHelper.createCharaDbHelper(this);
+        charaAdapter = new CharaAdapter(this, charaDbHelper);
+        recyclerView.setAdapter(charaAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
 
         //TODO 9.8 Put in code to allow each recyclerview item to be deleted when swiped
 
